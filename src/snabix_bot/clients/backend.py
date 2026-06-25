@@ -2,7 +2,11 @@ from typing import Any, Optional
 
 import aiohttp
 
-from snabix_bot.schemas.backend import BackendHealthDto
+from snabix_bot.schemas.backend import (
+    BackendHealthDto,
+    BackendServiceIdentityDto,
+    BackendStatsDto,
+)
 
 
 class BackendClient:
@@ -13,13 +17,23 @@ class BackendClient:
 
     async def health(self) -> BackendHealthDto:
         try:
-            data = await self._request("GET", "/health")
+            data = await self._request("GET", "/service/bot/health")
         except aiohttp.ClientResponseError as exc:
             return BackendHealthDto(ok=False, status=exc.status, message=exc.message)
         except aiohttp.ClientError as exc:
             return BackendHealthDto(ok=False, status=0, message=str(exc))
 
         return BackendHealthDto.model_validate(data)
+
+    async def me(self) -> BackendServiceIdentityDto:
+        data = await self._request("GET", "/service/bot/me")
+
+        return BackendServiceIdentityDto.model_validate(data)
+
+    async def stats(self) -> BackendStatsDto:
+        data = await self._request("GET", "/service/bot/stats")
+
+        return BackendStatsDto.model_validate(data)
 
     async def close(self) -> None:
         if self._session is not None and not self._session.closed:
@@ -47,4 +61,9 @@ class BackendClient:
             response.raise_for_status()
             payload = await response.json(content_type=None)
 
-        return payload if isinstance(payload, dict) else {"data": payload}
+        if not isinstance(payload, dict):
+            return {"data": payload}
+
+        data = payload.get("data")
+
+        return data if isinstance(data, dict) else payload

@@ -1,6 +1,7 @@
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
+from aiohttp import ClientError
 
 from snabix_bot.clients.backend import BackendClient
 from snabix_bot.services.access import AccessService
@@ -25,4 +26,54 @@ async def health(
         f"Backend health: {status}\n"
         f"HTTP/status: {result.status}\n"
         f"Message: {result.message}"
+    )
+
+
+@router.message(Command("me"))
+async def me(
+    message: Message,
+    backend: BackendClient,
+    access: AccessService,
+) -> None:
+    if not access.is_admin(message.from_user):
+        await message.answer("Команда доступна только администраторам.")
+        return
+
+    try:
+        identity = await backend.me()
+    except ClientError as exc:
+        await message.answer(f"Не удалось получить service identity: {exc}")
+        return
+
+    await message.answer(
+        "Service API подключен.\n"
+        f"Service: {identity.service}\n"
+        f"Mode: {identity.mode}\n"
+        f"Version: {identity.version}"
+    )
+
+
+@router.message(Command("stats"))
+async def stats(
+    message: Message,
+    backend: BackendClient,
+    access: AccessService,
+) -> None:
+    if not access.is_admin(message.from_user):
+        await message.answer("Команда доступна только администраторам.")
+        return
+
+    try:
+        summary = await backend.stats()
+    except ClientError as exc:
+        await message.answer(f"Не удалось получить статистику: {exc}")
+        return
+
+    await message.answer(
+        "Статистика Snabix:\n"
+        f"Пользователей: {summary.users_total}\n"
+        f"Объявлений всего: {summary.listings_total}\n"
+        f"На модерации: {summary.listings_pending_review}\n"
+        f"Опубликовано: {summary.listings_published}\n"
+        f"В архиве: {summary.listings_archived}"
     )
