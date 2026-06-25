@@ -1,0 +1,1 @@
+"""Snabix Telegram bot package."""

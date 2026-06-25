@@ -1,0 +1,39 @@
+[project]
+name = "snabix-bot"
+version = "0.1.0"
+description = "Telegram service bot for Snabix admin and notification workflows."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "aiogram>=3.15,<4.0",
+    "aiohttp>=3.10,<4.0",
+    "pydantic>=2.9,<3.0",
+    "pydantic-settings>=2.6,<3.0",
+    "python-dotenv>=1.0,<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.13,<2.0",
+    "pytest>=8.3,<9.0",
+    "pytest-asyncio>=0.24,<1.0",
+    "ruff>=0.8,<1.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "SIM"]
+ignore = ["UP007"]
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+packages = ["snabix_bot"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
