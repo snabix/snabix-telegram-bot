@@ -5,7 +5,8 @@ from aiogram import Bot, Dispatcher
 
 from snabix_bot.clients.backend import BackendClient
 from snabix_bot.config import Settings
-from snabix_bot.handlers import admin, common
+from snabix_bot.handlers import admin, callbacks, common, errors
+from snabix_bot.services.access import AccessService
 
 
 async def run() -> None:
@@ -16,17 +17,25 @@ async def run() -> None:
     )
 
     bot = Bot(token=settings.bot_token)
+    backend = BackendClient(
+        settings.backend_base_url,
+        settings.backend_service_token,
+    )
     dispatcher = Dispatcher(
-        backend=BackendClient(
-            settings.backend_base_url,
-            settings.backend_service_token
-        ),
+        access=AccessService(settings.admin_ids),
+        backend=backend,
         settings=settings,
     )
     dispatcher.include_router(common.router)
     dispatcher.include_router(admin.router)
+    dispatcher.include_router(callbacks.router)
+    dispatcher.include_router(errors.router)
 
-    await dispatcher.start_polling(bot)
+    try:
+        await dispatcher.start_polling(bot)
+    finally:
+        await backend.close()
+        await bot.session.close()
 
 
 def main() -> None:
