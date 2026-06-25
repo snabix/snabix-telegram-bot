@@ -3,18 +3,18 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from snabix_bot.clients.backend import BackendClient
-from snabix_bot.config import Settings
+from snabix_bot.services.access import AccessService
 
 router = Router(name="admin")
 
 
 @router.message(Command("health"))
 async def health(
-        message: Message,
-        backend: BackendClient,
-        settings: Settings
+    message: Message,
+    backend: BackendClient,
+    access: AccessService,
 ) -> None:
-    if message.from_user is None or message.from_user.id not in settings.admin_ids:
+    if not access.is_admin(message.from_user):
         await message.answer("Команда доступна только администраторам.")
         return
 
