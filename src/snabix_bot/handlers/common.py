@@ -11,7 +11,8 @@ router = Router(name="common")
 async def start(message: Message, access: AccessService) -> None:
     is_admin = access.is_admin(message.from_user)
     admin_note = (
-        "\n\nВы определены как администратор. Доступны команды: /health."
+        "\n\nВы определены как администратор. "
+        "Доступны команды: /health, /me, /stats, /sync_commands."
         if is_admin
         else "\n\nЕсли вы администратор, добавьте свой Telegram ID в SNABIX_ADMIN_TELEGRAM_IDS."
     )
@@ -24,13 +25,36 @@ async def start(message: Message, access: AccessService) -> None:
     )
 
 
+@router.message(Command("whoami"))
+async def whoami(message: Message, access: AccessService) -> None:
+    user = message.from_user
+
+    if user is None:
+        await message.answer("Не удалось определить Telegram пользователя для этого сообщения.")
+        return
+
+    username = f"@{user.username}" if user.username else "не указан"
+    full_name = user.full_name or "не указано"
+    is_admin = "да" if access.is_admin(user) else "нет"
+
+    await message.answer(
+        "Ваш Telegram профиль:\n"
+        f"ID: {user.id}\n"
+        f"Username: {username}\n"
+        f"Имя: {full_name}\n"
+        f"Администратор Snabix Bot: {is_admin}"
+    )
+
+
 @router.message(Command("help"))
 async def help_command(message: Message) -> None:
     await message.answer(
         "Доступные команды:\n"
         "/start - запустить бота\n"
         "/help - список команд\n"
+        "/whoami - показать Telegram ID и статус доступа\n"
         "/health - проверить backend, доступно администраторам\n"
         "/me - проверить service API, доступно администраторам\n"
-        "/stats - базовая статистика, доступно администраторам"
+        "/stats - базовая статистика, доступно администраторам\n"
+        "/sync_commands - обновить меню команд Telegram, доступно администраторам"
     )

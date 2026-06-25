@@ -9,6 +9,7 @@ from snabix_bot.clients.backend import BackendClient
 from snabix_bot.config import Settings
 from snabix_bot.handlers import admin, callbacks, common, errors
 from snabix_bot.services.access import AccessService
+from snabix_bot.services.commands import setup_bot_commands
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ def build_dispatcher(settings: Settings, backend: BackendClient) -> Dispatcher:
 async def run_polling(settings: Settings, bot: Bot, dispatcher: Dispatcher) -> None:
     logger.info("Starting bot in polling mode")
     await bot.delete_webhook(drop_pending_updates=True)
+    await setup_bot_commands(bot)
     await dispatcher.start_polling(bot)
 
 
@@ -47,6 +49,7 @@ async def run_webhook(settings: Settings, bot: Bot, dispatcher: Dispatcher) -> N
         secret_token=settings.webhook_secret or None,
         drop_pending_updates=True,
     )
+    await setup_bot_commands(bot)
 
     app = web.Application()
     request_handler = SimpleRequestHandler(
