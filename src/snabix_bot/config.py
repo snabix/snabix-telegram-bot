@@ -15,6 +15,10 @@ class Settings(BaseSettings):
     bot_mode: Literal["polling", "webhook"] = Field(default="polling", alias="SNABIX_BOT_MODE")
     backend_base_url: str = Field(alias="SNABIX_BACKEND_BASE_URL")
     backend_service_token: str = Field(alias="SNABIX_BACKEND_SERVICE_TOKEN")
+    admin_panel_url: str = Field(
+        default="http://127.0.0.1:8080/admin",
+        alias="SNABIX_ADMIN_PANEL_URL",
+    )
     admin_telegram_ids: str = Field(
         default="",
         alias="SNABIX_ADMIN_TELEGRAM_IDS",
