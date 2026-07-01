@@ -34,6 +34,8 @@ Do not commit `.env`.
 
 ## Run
 
+Polling mode:
+
 ```bash
 . .venv/bin/activate
 PYTHONPATH=src python -m snabix_bot
@@ -41,6 +43,32 @@ PYTHONPATH=src python -m snabix_bot
 
 For local development the bot uses long polling. Production can stay on polling
 for the admin MVP, then move to webhook when infrastructure is ready.
+
+Webhook mode with ngrok:
+
+```bash
+ngrok http 9000
+```
+
+Copy the HTTPS forwarding URL from ngrok and update `.env`:
+
+```env
+SNABIX_BOT_MODE=webhook
+SNABIX_BOT_WEBHOOK_URL=https://your-ngrok-domain.ngrok-free.app/webhook/telegram
+SNABIX_BOT_WEBHOOK_PATH=/webhook/telegram
+SNABIX_BOT_WEBHOOK_SECRET=generate-random-secret
+SNABIX_BOT_HOST=0.0.0.0
+SNABIX_BOT_PORT=9000
+```
+
+Then start the bot:
+
+```bash
+PYTHONPATH=src python -m snabix_bot
+```
+
+The webhook secret is sent by Telegram in `X-Telegram-Bot-Api-Secret-Token`
+and verified by aiogram before the update reaches handlers.
 
 ## Quality Checks
 
