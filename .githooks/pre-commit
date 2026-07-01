@@ -2,7 +2,24 @@
 set -eu
 
 echo "Running bot pre-commit checks..."
-ruff format --check .
-ruff check .
-PYTHONPATH=src mypy
-PYTHONPATH=src pytest
+
+RUFF="${RUFF:-ruff}"
+MYPY="${MYPY:-mypy}"
+PYTEST="${PYTEST:-pytest}"
+
+if [ -x ".venv/bin/ruff" ]; then
+  RUFF=".venv/bin/ruff"
+fi
+
+if [ -x ".venv/bin/mypy" ]; then
+  MYPY=".venv/bin/mypy"
+fi
+
+if [ -x ".venv/bin/pytest" ]; then
+  PYTEST=".venv/bin/pytest"
+fi
+
+"$RUFF" format --check .
+"$RUFF" check .
+PYTHONPATH=src "$MYPY"
+PYTHONPATH=src "$PYTEST"
