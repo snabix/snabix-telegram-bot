@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+set -eu
+
+echo "Running bot pre-commit checks..."
+ruff format --check .
+ruff check .
+PYTHONPATH=src mypy
+PYTHONPATH=src pytest

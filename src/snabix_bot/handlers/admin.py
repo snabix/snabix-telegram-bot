@@ -23,18 +23,8 @@ REFRESH_STATS = "admin:refresh:stats"
 def admin_keyboard(settings: Settings, refresh_callback: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text="Открыть админку",
-                    url=settings.admin_panel_url
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="Обновить",
-                    callback_data=refresh_callback
-                )
-            ],
+            [InlineKeyboardButton(text="Открыть админку", url=settings.admin_panel_url)],
+            [InlineKeyboardButton(text="Обновить", callback_data=refresh_callback)],
         ]
     )
 
@@ -42,12 +32,7 @@ def admin_keyboard(settings: Settings, refresh_callback: str) -> InlineKeyboardM
 def format_health(result: BackendHealthDto) -> str:
     status = "Доступен" if result.ok else "Недоступен"
 
-    return (
-        "Backend health\n\n"
-        f"Статус: {status}\n"
-        f"HTTP: {result.status}\n"
-        f"Сообщение: {result.message}"
-    )
+    return f"Backend health\n\nСтатус: {status}\nHTTP: {result.status}\nСообщение: {result.message}"
 
 
 def format_identity(identity: BackendServiceIdentityDto) -> str:

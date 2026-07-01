@@ -33,7 +33,5 @@ class Settings(BaseSettings):
     @property
     def admin_ids(self) -> frozenset[int]:
         return frozenset(
-            int(part.strip())
-            for part in self.admin_telegram_ids.split(",")
-            if part.strip()
+            int(part.strip()) for part in self.admin_telegram_ids.split(",") if part.strip()
         )
