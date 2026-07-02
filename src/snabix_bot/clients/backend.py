@@ -41,10 +41,12 @@ class BackendClient:
 
     async def _get_session(self) -> aiohttp.ClientSession:
         if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession(headers={
-                "Accept": "application/json",
-                "Authorization": f"Bearer {self._service_token}",
-            })
+            self._session = aiohttp.ClientSession(
+                headers={
+                    "Accept": "application/json",
+                    "Authorization": f"Bearer {self._service_token}",
+                }
+            )
 
         return self._session
 

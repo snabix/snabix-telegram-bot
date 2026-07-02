@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+
+echo "Running bot pre-push checks..."
+. "$(dirname "$0")/pre-commit"
