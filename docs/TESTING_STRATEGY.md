@@ -3,7 +3,7 @@
 ## Проверки
 
 ```bash
-cd /Users/dustun/Projects/snabix/snabix-telegram-bot
+cd $PROJECT_ROOT/snabix-telegram-bot
 task check
 ```
 

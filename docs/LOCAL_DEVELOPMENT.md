@@ -3,7 +3,7 @@
 ## Первый запуск
 
 ```bash
-cd /Users/dustun/Projects/snabix/snabix-telegram-bot
+cd $PROJECT_ROOT/snabix-telegram-bot
 python3 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/pip install -r requirements-dev.txt

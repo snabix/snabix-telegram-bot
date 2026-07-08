@@ -11,13 +11,13 @@
 ## Основной env
 
 ```text
-/Users/imranpskhu/projects/snabix/snabix-bot/.env
+$PROJECT_ROOT/snabix-telegram-bot/.env
 ```
 
 Пример:
 
 ```text
-/Users/imranpskhu/projects/snabix/snabix-bot/.env.example
+$PROJECT_ROOT/snabix-telegram-bot/.env.example
 ```
 
 ## Переменные
