@@ -3,12 +3,19 @@
 ## Первый запуск
 
 ```bash
-cd /Users/imranpskhu/projects/snabix/snabix-bot
+cd /Users/dustun/Projects/snabix/snabix-telegram-bot
 python3 -m venv .venv
-. .venv/bin/activate
-pip install -r requirements-dev.txt
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/pip install -r requirements-dev.txt
 cp .env.example .env
-PYTHONPATH=src python -m snabix_bot
+PYTHONPATH=src .venv/bin/python -m snabix_bot
+```
+
+Если установлен `go-task`, можно короче:
+
+```bash
+task setup
+task run
 ```
 
 ## Обязательные переменные
@@ -29,8 +36,7 @@ SNABIX_ADMIN_TELEGRAM_IDS=123456789
 Рекомендуется для локальной разработки:
 
 ```bash
-. .venv/bin/activate
-PYTHONPATH=src python -m snabix_bot
+PYTHONPATH=src .venv/bin/python -m snabix_bot
 ```
 
 ## Webhook режим
@@ -55,7 +61,7 @@ SNABIX_BOT_PORT=9000
 Запусти:
 
 ```bash
-PYTHONPATH=src python -m snabix_bot
+PYTHONPATH=src .venv/bin/python -m snabix_bot
 ```
 
 ## Частые проблемы
@@ -90,7 +96,5 @@ SNABIX_BOT_PORT=9001
 ## Проверки
 
 ```bash
-PYTHONPATH=src ruff check .
-PYTHONPATH=src mypy src tests
-PYTHONPATH=src pytest
+task check
 ```

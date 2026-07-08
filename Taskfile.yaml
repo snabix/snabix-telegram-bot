@@ -1,0 +1,37 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Show available bot tasks
+    cmds:
+      - task --list
+
+  setup:
+    desc: Create local virtualenv and install development dependencies
+    cmds:
+      - python3 -m venv .venv
+      - .venv/bin/python -m pip install --upgrade pip
+      - .venv/bin/pip install -r requirements-dev.txt
+
+  lint:
+    desc: Run Ruff checks
+    cmd: PYTHONPATH=src .venv/bin/ruff check .
+
+  typecheck:
+    desc: Run mypy checks
+    cmd: PYTHONPATH=src .venv/bin/mypy src tests
+
+  test:
+    desc: Run pytest
+    cmd: PYTHONPATH=src .venv/bin/pytest
+
+  check:
+    desc: Run all bot quality checks
+    cmds:
+      - task lint
+      - task typecheck
+      - task test
+
+  run:
+    desc: Run bot from local virtualenv
+    cmd: PYTHONPATH=src .venv/bin/python -m snabix_bot

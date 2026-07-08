@@ -3,9 +3,7 @@
 ## Автоматические проверки
 
 ```bash
-PYTHONPATH=src ruff check .
-PYTHONPATH=src mypy src tests
-PYTHONPATH=src pytest
+task check
 ```
 
 ## Env

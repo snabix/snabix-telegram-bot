@@ -24,21 +24,28 @@ The bot should call service endpoints with `SNABIX_BACKEND_SERVICE_TOKEN`.
 
 ```bash
 python3 -m venv .venv
-. .venv/bin/activate
-pip install -r requirements-dev.txt
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/pip install -r requirements-dev.txt
 cp .env.example .env
-python -m snabix_bot
+PYTHONPATH=src .venv/bin/python -m snabix_bot
 ```
 
 Do not commit `.env`.
+
+If `go-task` is installed, the same setup can be done with:
+
+```bash
+task setup
+```
 
 ## Run
 
 Polling mode:
 
 ```bash
-. .venv/bin/activate
-PYTHONPATH=src python -m snabix_bot
+PYTHONPATH=src .venv/bin/python -m snabix_bot
+# or
+task run
 ```
 
 For local development the bot uses long polling. Production can stay on polling
@@ -64,7 +71,7 @@ SNABIX_BOT_PORT=9000
 Then start the bot:
 
 ```bash
-PYTHONPATH=src python -m snabix_bot
+PYTHONPATH=src .venv/bin/python -m snabix_bot
 ```
 
 The webhook secret is sent by Telegram in `X-Telegram-Bot-Api-Secret-Token`
@@ -73,9 +80,7 @@ and verified by aiogram before the update reaches handlers.
 ## Quality Checks
 
 ```bash
-PYTHONPATH=src ruff check .
-PYTHONPATH=src mypy src tests
-PYTHONPATH=src pytest
+task check
 ```
 
 ## Suggested MVP

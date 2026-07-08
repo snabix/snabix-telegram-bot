@@ -3,10 +3,16 @@
 ## Проверки
 
 ```bash
-cd /Users/imranpskhu/projects/snabix/snabix-bot
-PYTHONPATH=src ruff check .
-PYTHONPATH=src mypy src tests
-PYTHONPATH=src pytest
+cd /Users/dustun/Projects/snabix/snabix-telegram-bot
+task check
+```
+
+Без `go-task` команды можно запустить напрямую:
+
+```bash
+PYTHONPATH=src .venv/bin/ruff check .
+PYTHONPATH=src .venv/bin/mypy src tests
+PYTHONPATH=src .venv/bin/pytest
 ```
 
 ## Что тестировать
