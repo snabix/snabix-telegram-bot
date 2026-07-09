@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt -r requirements-dev.txt
 
+      - name: Production secret guard
+        run: python scripts/check_production_secrets.py --self-test
+
       - name: Ruff format check
         run: ruff format --check .
 

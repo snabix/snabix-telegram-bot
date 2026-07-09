@@ -25,9 +25,18 @@ tasks:
     desc: Run pytest
     cmd: PYTHONPATH=src .venv/bin/pytest
 
+  secrets:self-test:
+    desc: Validate production secret guard against safe and unsafe examples
+    cmd: .venv/bin/python scripts/check_production_secrets.py --self-test
+
+  secrets:production:
+    desc: Check production env for dev placeholders; pass PRODUCTION_ENV_FILE=/path/to/.env.production
+    cmd: .venv/bin/python scripts/check_production_secrets.py --env-file "${PRODUCTION_ENV_FILE}"
+
   check:
     desc: Run all bot quality checks
     cmds:
+      - task "secrets:self-test"
       - task lint
       - task typecheck
       - task test
