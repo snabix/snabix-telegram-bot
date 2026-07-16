@@ -2,6 +2,9 @@
 
 `snabix-bot` — отдельный Python-сервис для Telegram. Сейчас бот ориентирован на сервисные и админские сценарии.
 
+Единый аудит backend, frontend и Telegram-бота ведется в
+`$PROJECT_ROOT/snabix-backend/.docs/TECHNICAL_AUDIT.md`.
+
 ## Назначение
 
 Текущие возможности:
